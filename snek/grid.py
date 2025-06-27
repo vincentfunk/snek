@@ -7,7 +7,6 @@ class Grid(list):
         self.adjacent = []
         if grid is None:
             for line in range(y):
-                # self.append(['.' for pos in range(x)])
                 self.append(['.'] * x)
         else:
             for line in grid:

@@ -70,9 +70,6 @@ class SnekGame:
     def hit_map(self, timeout=5):
         """generate and display map of successful completions on the current grid"""
         hit_map = Grid(len(self.field), len(self.field[0]))
-        # success = 0
-        # fail = 0
-        # total = len(self.field) * len(self.field[0])
         quad_amount = math.ceil(len(self.field) / 2) * math.ceil(len(self.field[0]) / 2)
         long = []
         bar = LoadingBar(quad_amount)
@@ -85,10 +82,6 @@ class SnekGame:
                     long.append((j, k))
                 if result:
                     hit_map[j][k] = 'X'
-                #     success += 1
-                # else:
-                #     # hit_map[j][k] = '.'
-                #     fail += 1
                 bar.progress()
         hit_map.quad_mirror()
         # check number of success and fails
