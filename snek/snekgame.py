@@ -118,10 +118,11 @@ class SnekGame:
         ]
         return sorted([data for data in directs if data[0] != 0], key=lambda x: x[0])
 
-    def only_closest(self, display=False):
+    def only_closest(self, display=False, delay=0):
         """attempt to solve by only moving to closest"""
         if display:
             self.field.display()
+        time.sleep(delay)
         # calculate movement
         close = self.closest_list()
         # if no move check if complete
@@ -129,13 +130,14 @@ class SnekGame:
             return self.is_finished()
         # move in the closest direction
         self.move_snek(close[0][1])
-        return self.only_closest(display)
+        return self.only_closest(display, delay)
 
-    def can_solve(self, timeout, display=False):
-        """attempt to solve trying all combinations that dont violate all adjacency"""
+    def can_solve(self, timeout, display=False, delay=0):
+        """attempt to solve trying all combinations that don't violate all adjacency"""
         # display, timeout, and adjacent checks
         if display:
             self.field.display()
+        time.sleep(delay)
         if time.time() > timeout:
             return False
         if not self.field.all_adjacent('.'):
@@ -148,20 +150,21 @@ class SnekGame:
         # attempt movement in each direction starting from closest
         for value, direction in close:
             self.move_snek(direction)
-            works = self.can_solve(timeout, display)
+            works = self.can_solve(timeout, display, delay)
             if works:
                 return True
             self.reverse_snek(direction)
+
         return False
 
-    def speed_solve(self, y, x, timeout=None):
-        """combine both solving methods to only use slow mode if basic closest fails
+    def speed_solve(self, y, x, timeout=None, display=False, delay=0):
+        """combine both solving methods to only use recursive mode if basic closest fails
         also resets board to a new snek location"""
         if timeout is None:
             timeout = time.time() + 60
         self.__init__(len(self.field), len(self.field[0]), y, x)
-        if self.only_closest():
+        if self.only_closest(display, delay):
             return True
         else:
             self.__init__(len(self.field), len(self.field[0]), y, x)
-            return self.can_solve(timeout)
+            return self.can_solve(timeout, display, delay)
