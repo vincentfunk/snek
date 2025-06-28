@@ -161,7 +161,7 @@ class SnekGame:
         """combine both solving methods to only use recursive mode if basic closest fails
         also resets board to a new snek location"""
         if timeout is None:
-            timeout = time.time() + 60
+            timeout = time.time() + 600
         self.__init__(len(self.field), len(self.field[0]), y, x)
         if self.only_closest(display, delay):
             return True
