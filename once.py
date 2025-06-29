@@ -4,7 +4,7 @@ import time
 from snek.snekgame import SnekGame
 from tkinter import Tk, Label
 
-if len(sys.argv) in [0, 1, 3, 5] or len(sys.argv) > 6:
+if len(sys.argv) in [3, 5] or len(sys.argv) > 6:
     print("Usage: python once.py [step_time:float] [height:int] [width:int] [snek_start_y:int] [snek_start_x:int]")
     sys.exit()
 
@@ -13,8 +13,13 @@ try:
         game = SnekGame(int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]))
     elif len(sys.argv) == 4:
         game = SnekGame(int(sys.argv[2]), int(sys.argv[3]))
-    else:
+    elif len(sys.argv) == 2:
+        delay = float(sys.argv[1])
         game = SnekGame(10, 20)
+    else:
+        delay = 0.1
+        game = SnekGame(10, 20)
+
 except ValueError:
     print("Usage: python once.py [step_time:float] [height:int] [width:int] [snek_start_y:int] [snek_start_x:int]")
     sys.exit()
@@ -28,7 +33,7 @@ board.focus_set()
 # Generate timer events from a separate thread
 def timer():
     while True:
-        time.sleep(float(sys.argv[1]))
+        time.sleep(delay)
         board.event_generate('<<Timer>>')
 
 
@@ -37,7 +42,7 @@ timer_thread = threading.Thread(target=timer)
 
 # Run the actual snekgame in a separate thread and start right after tkinter board is displayed
 def act_game():
-    game.speed_solve(game.snek.y, game.snek.x, display=False, delay=float(sys.argv[1]))
+    game.speed_solve(game.snek.y, game.snek.x, display=False, delay=delay)
 
 
 def start():
