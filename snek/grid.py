@@ -22,6 +22,17 @@ class Grid(list):
             print('|')
         print('+' + '-' * len(self[0]) + '+')
 
+    def __str__(self):
+        """return display as string"""
+        total_str = '+' + '-' * len(self[0]) + '+\n'
+        for line in self:
+            total_str += '|'
+            for pos in line:
+                total_str += pos
+            total_str += '|\n'
+        total_str += '+' + '-' * len(self[0]) + '+'
+        return total_str
+
     def draw_line(self, direct, pos):
         """create line of 0s on grid"""
         if direct == 'up' or direct == 'down':
