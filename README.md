@@ -23,4 +23,10 @@ Snake follows simple rules to move
 
 -always go to the closest wall or filled in tile  
 -unless it would split the open space into two separate areas which would make the route a fail  
--when the snake is finished if the board is not complete it will recursively rewind and try the next best direction for the last movement
+-when the snake is finished if the board is not complete it will recursively rewind and try the next best direction for the last movement  
+
+## Example
+
+Use `python once.py 0.1 20 30` to get a visuallization for how the snek is moving on a 20x30 board
+Run `python full_board.py 1 20 30` to find points that take over 1 second to solve on the same size of board
+Finally `python once.py 0.1 20 30 [slow_point_y] [slow_point_x]` to visuallize why the snek takes longer starting from the slow points reported in from the last command 
