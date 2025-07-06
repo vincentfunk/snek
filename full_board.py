@@ -1,14 +1,14 @@
-from snek.snekgame import SnekGame
+from snek.hitmap import HitMap
 import sys
 
 if len(sys.argv) == 3 or len(sys.argv) > 4:
-    print("Usage: python full_board.py [height] [width] [timeout]")
+    print("Usage: python full_board.py [timeout] [height] [width]")
     sys.exit()
 
 if len(sys.argv) == 4:
-    game = SnekGame(int(sys.argv[2]), int(sys.argv[3]))
+    game = HitMap(int(sys.argv[2]), int(sys.argv[3]))
 else:
-    game = SnekGame(10, 20)
+    game = HitMap(10, 20)
 
 if len(sys.argv) == 2:
     game.hit_map(int(sys.argv[1]))

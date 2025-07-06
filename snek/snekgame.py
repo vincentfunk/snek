@@ -53,49 +53,6 @@ class SnekGame:
                 return False
         return True
 
-    @staticmethod
-    def timer(func):
-        """wrapper to print execution time"""
-        def wrap(*args, **kwargs):
-            begin = time.time()
-            thefunc = func(*args, **kwargs)
-            print("Execution Time:", time.time() - begin)
-            return thefunc
-        return wrap
-
-    @timer
-    def hit_map(self, timeout=5):
-        """generate and display map of successful completions on the current grid"""
-        hit_map = Grid(len(self.field), len(self.field[0]))
-        quad_amount = math.ceil(len(self.field) / 2) * math.ceil(len(self.field[0]) / 2)
-        long = []
-        bar = LoadingBar(quad_amount)
-        bar.start()
-        # Only run 1/4 of the games then mirror the results
-        for j, line in enumerate(hit_map[:math.ceil(len(self.field) / 2)]):
-            for k, pos in enumerate(line[:math.ceil(len(line) / 2)]):
-                finishby = time.time() + timeout
-                result = self.speed_solve(j, k, finishby)
-                if time.time() > finishby - (timeout / 4):
-                    long.append((j, k))
-                if result:
-                    hit_map[j][k] = 'X'
-                bar.progress()
-        hit_map.quad_mirror()
-        # check number of success and fails
-        success, fail = 0, 0
-        total = len(hit_map) * len(hit_map[0])
-        for line in hit_map:
-            for char in line:
-                if char == '.':
-                    fail += 1
-        success = total - fail
-        # display results and stats
-        hit_map.display()
-        print("Success:", success, "Fail:", fail)
-        print("Success Ratio:", f"{success * 100 / total}%")
-        print("Long Cords:", long)
-
     def open_space(self, line):
         """return amount of open space to the left of snek in a line, snek = @, open = ."""
         line = "".join(line)
