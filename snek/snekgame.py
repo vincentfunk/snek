@@ -9,19 +9,16 @@ from snek.loadingbar import LoadingBar
 class SnekGame:
     def __init__(self, y, x, snek_y=None, snek_x=None):
         self.field = Grid(y, x)
-        self.snek = None
-        if snek_x is None or snek_y is None:
-            self.random_snek()
+        self.snek = self.create_snek(snek_y, snek_x)
+
+    def create_snek(self, y=None, x=None):
+        """create the snek at a random or specified location"""
+        if y is None or x is None:
+            new_snek = Snek(random.randint(0, len(self.field) - 1), random.randint(0, len(self.field[0]) - 1))
         else:
-            self.custom_snek(snek_y, snek_x)
-
-    def random_snek(self):
-        self.snek = Snek(random.randint(0, len(self.field) - 1), random.randint(0, len(self.field[0]) - 1))
-        self.field[self.snek.y][self.snek.x] = '@'
-
-    def custom_snek(self, y, x):
-        self.snek = Snek(y, x)
-        self.field[self.snek.y][self.snek.x] = '@'
+            new_snek = Snek(y, x)
+        self.field[new_snek.y][new_snek.x] = '@'
+        return new_snek
 
     def move_snek(self, direct):
         """move snek in direction"""
@@ -74,6 +71,7 @@ class SnekGame:
         long = []
         bar = LoadingBar(quad_amount)
         bar.start()
+        # Only run 1/4 of the games then mirror the results
         for j, line in enumerate(hit_map[:math.ceil(len(self.field) / 2)]):
             for k, pos in enumerate(line[:math.ceil(len(line) / 2)]):
                 finishby = time.time() + timeout
