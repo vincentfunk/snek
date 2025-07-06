@@ -38,6 +38,7 @@ def timer():
 
 
 timer_thread = threading.Thread(target=timer)
+timer_thread.daemon = True
 
 
 # Run the actual snekgame in a separate thread and start right after tkinter board is displayed
@@ -51,13 +52,19 @@ def start():
 
 root.after(1, start)
 game_thread = threading.Thread(target=act_game)
+game_thread.daemon = True
 
 
 def update(event):
     board.configure(text=str(game.field))
 
 
+def finish():
+    root.destroy()
+
+
 # Start timer and tkinter display
+root.protocol('WM_DELETE_WINDOW', finish)
 board.bind('<<Timer>>', update)
 timer_thread.start()
 root.mainloop()
